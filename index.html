@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предложение руки и сердца</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: all 1s ease;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        /* Dark overlay for better text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            transition: all 1s ease;
+        }
+
+        /* Animated elements */
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            animation: float 8s infinite linear;
+            z-index: 2;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 3s infinite;
+            z-index: 2;
+        }
+
+        .rose-petal {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.7);
+            font-size: 16px;
+            animation: fall 10s infinite linear;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .content {
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+
+        /* Image container for questions */
+        .question-image {
+            margin: 20px auto;
+            max-width: 100%;
+            text-align: center;
+            display: none;
+        }
+
+        .question-image.active {
+            display: block;
+            animation: imageAppear 1s ease;
+        }
+
+        .question-image img {
+            max-width: 100%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .question-image img {
+                max-height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-image img {
+                max-height: 150px;
+            }
+        }
+
+        @keyframes imageAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .main-question {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4em;
+            color: white;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        /* Mobile responsive text */
+        @media (max-width: 768px) {
+            .main-question {
+                font-size: 2.5em;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-question {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
+            }
+            to {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+            }
+        }
+
+        .question {
+            font-size: 2.2em;
+            color: white;
+            margin: 20px 0;
+            font-weight: 400;
+            display: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Mobile responsive questions */
+        @media (max-width: 768px) {
+            .question {
+                font-size: 1.6em;
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question {
+                font-size: 1.3em;
+                margin: 10px 0;
+            }
+        }
+
+        .question.active {
+            display: block;
+            animation: questionAppear 1s ease;
+        }
+
+        @keyframes questionAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Final message styling */
+        .final-message {
+            font-size: 1.4em;
+            color: #ffb3ba;
+            margin: 20px 0;
+            font-weight: 500;
+            display: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .final-message {
+                font-size: 1.2em;
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .final-message {
+                font-size: 1em;
+                margin: 10px 0;
+            }
+        }
+
+        .final-message.show {
+            display: block;
+            animation: finalMessageAppear 1.5s ease;
+        }
+
+        @keyframes finalMessageAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Mobile responsive buttons */
+        @media (max-width: 768px) {
+            .buttons {
+                gap: 25px;
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                margin-top: 25px;
+            }
+        }
+
+        .btn {
+            padding: 20px 50px;
+            font-size: 1.4em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            min-width: 120px;
+        }
+
+        /* Mobile responsive buttons */
+        @media (max-width: 768px) {
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.2em;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 12px 30px;
+                font-size: 1.1em;
+                min-width: 90px;
+                width: 80%;
+                max-width: 200px;
+            }
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            transform: scale(1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 107, 157, 0.7);
+            }
+            70% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(255, 107, 157, 0);
+            }
+            100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 107, 157, 0);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #95afc0, #70a1ff);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(149, 175, 192, 0.4);
+        }
+
+        .btn-no.running {
+            position: absolute;
+            transition: all 0.5s ease;
+            z-index: 20;
+        }
+
+        .celebration {
+            display: none;
+            font-family: 'Dancing Script', cursive;
+            font-size: 5em;
+            color: white;
+            font-weight: 700;
+            animation: celebrationBounce 1s infinite;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Mobile responsive celebration */
+        @media (max-width: 768px) {
+            .celebration {
+                font-size: 3.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .celebration {
+                font-size: 2.5em;
+            }
+        }
+
+        @keyframes celebrationBounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            40% {
+                transform: translateY(-40px) scale(1.1);
+            }
+            60% {
+                transform: translateY(-20px) scale(1.05);
+            }
+        }
+
+        .celebration.show {
+            display: block;
+        }
+
+        /* Celebration GIF styling */
+        .celebration-gif {
+            display: none;
+            margin: 20px auto;
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .celebration-gif.show {
+            display: block;
+            animation: celebrationGifAppear 1.5s ease;
+        }
+
+        .celebration-gif img {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(255, 107, 157, 0.4);
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .celebration-gif img {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .celebration-gif img {
+                max-height: 200px;
+            }
+        }
+
+        @keyframes celebrationGifAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotateY(180deg);
+            }
+            50% {
+                transform: scale(1.1) rotateY(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateY(0deg);
+            }
+        }
+
+        .stage-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            color: #c44569;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 15;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile responsive stage indicator */
+        @media (max-width: 768px) {
+            .stage-indicator {
+                top: 20px;
+                right: 20px;
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stage-indicator {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+
+        .hearts-explosion {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 40px;
+            animation: explode 3s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) rotate(720deg) translateY(-300px);
+                opacity: 0;
+            }
+        }
+
+        /* Background animations for different stages */
+        .stage-1 { background-image: url('https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=1920&h=1080&fit=crop'); }
+        .stage-2 { background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop'); }
+        .stage-3 { background-image: url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1920&h=1080&fit=crop'); }
+        .stage-4 { background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&h=1080&fit=crop'); }
+        .stage-5 { background-image: url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&h=1080&fit=crop'); }
+        .stage-6 { background-image: url('https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=1920&h=1080&fit=crop'); }
+
+        /* Additional animations for different stages */
+        .floating-rings {
+            position: absolute;
+            font-size: 30px;
+            color: rgba(255, 215, 0, 0.6);
+            animation: floatRings 6s infinite ease-in-out;
+            z-index: 2;
+        }
+
+        @keyframes floatRings {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        .dancing-cupid {
+            position: absolute;
+            font-size: 25px;
+            animation: danceCupid 4s infinite ease-in-out;
+            z-index: 2;
+        }
+
+        @keyframes danceCupid {
+            0%, 100% {
+                transform: translateX(0px) scale(1);
+            }
+            25% {
+                transform: translateX(20px) scale(1.1);
+            }
+            75% {
+                transform: translateX(-20px) scale(0.9);
+            }
+        }
+
+        /* Shake animation for running button */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Mobile optimizations for animations */
+        @media (max-width: 768px) {
+            .heart, .sparkle, .rose-petal, .floating-rings, .dancing-cupid {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body class="stage-1">
+    <!-- Dark overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Background animations -->
+    <div id="animationContainer"></div>
+    
+    <div class="content">
+        <div class="stage-indicator" id="stageIndicator">Этап 1/5</div>
+
+        <div class="main-question" id="mainQuestion">
+            Выйдешь за меня замуж?
+        </div>
+
+        <!-- Image containers for each question -->
+        <div class="question-image" id="questionImage1">
+            <img src="https://via.placeholder.com/400x300/ff69b4/ffffff?text=Resim+1" alt="Resim 1" />
+        </div>
+        <div class="question-image" id="questionImage2">
+            <img src="https://via.placeholder.com/400x300/ff1493/ffffff?text=Resim+2" alt="Resim 2" />
+        </div>
+        <div class="question-image" id="questionImage3">
+            <img src="https://via.placeholder.com/400x300/dc143c/ffffff?text=Resim+3" alt="Resim 3" />
+        </div>
+        <div class="question-image" id="questionImage4">
+            <img src="https://via.placeholder.com/400x300/b22222/ffffff?text=Resim+4" alt="Resim 4" />
+        </div>
+        <div class="question-image" id="questionImage5">
+            <img src="https://via.placeholder.com/400x300/8b0000/ffffff?text=Resim+5" alt="Resim 5" />
+        </div>
+
+        <!-- 🎯 BURAYA FINAL MESAJI İÇİN RESMİNİZİ KOYUN! -->
+        <!-- Final message için resim alanı - buton 2 kere kaçtıktan sonra gösterilir -->
+        <div class="question-image" id="finalMessageImage">
+            <img src="https://via.placeholder.com/400x300/ff69b4/ffffff?text=BURAYA+FINAL+RESMİNİZİ+KOYUN" alt="Final Resmi" />
+        </div>
+
+        <div class="question" id="question1">
+            Ты уверена? Подумай еще раз...
+        </div>
+        <div class="question" id="question2">
+            Серьезно? Может быть передумаешь?
+        </div>
+        <div class="question" id="question3">
+            Точно не хочешь быть со мной навсегда?
+        </div>
+        <div class="question" id="question4">
+            Последний шанс... Ты действительно откажешься?
+        </div>
+        <div class="question" id="question5">
+            Неужели ты так жестока? Попробуй еще раз!
+        </div>
+
+        <div class="final-message" id="finalMessage">
+            Ладно, солнышко, понимаю... Но знай, что я все равно буду ждать твое "да"! 💕<br>
+            Ты же знаешь, что рано или поздно все равно сдашься! 😉
+        </div>
+
+        <div class="celebration" id="celebration">
+            Ураааа!!! 💕✨🎉
+        </div>
+
+        <!-- 🎯 BURAYA EVETE BASTIĞINDA ÇIKACAK GIF'İNİZİ KOYUN! -->
+        <!-- Evlilik teklifi kabul edildiğinde gösterilecek GIF -->
+        <div class="celebration-gif" id="celebrationGif">
+            <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmNpMzZsajVqb3B0MXhxbzhyZWpvNmplaDdoM2IzNWFjYjk2eXBqMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/R907ZyjAWw9lSNnjeo/giphy.gif" alt="Evlilik GIF" />
+            <!-- YUKARIDAKI LINK'İ DEĞİŞTİRİN: Yüzük takma, evlilik teklifi kabul etme GIF'i -->
+        </div>
+
+        <div class="buttons" id="buttons">
+            <button class="btn btn-yes" id="yesBtn" onclick="sayYes()">Да ❤️</button>
+            <button class="btn btn-no" id="noBtn" onclick="sayNo()">Нет</button>
+        </div>
+    </div>
+
+    <div class="hearts-explosion" id="heartsExplosion"></div>
+
+    <script>
+        let currentStage = 0;
+        let isRunning = false;
+        let runCount = 0;
+        let maxRuns = 2;
+
+        // Create background animations
+        function createBackgroundAnimations() {
+            const container = document.getElementById('animationContainer');
+            
+            // Floating hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = ['💕', '💖', '💗', '💝', '❤️'][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 8000);
+            }, 800);
+
+            // Sparkles
+            setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    if (sparkle.parentNode) {
+                        sparkle.parentNode.removeChild(sparkle);
+                    }
+                }, 3000);
+            }, 500);
+
+            // Rose petals (for later stages)
+            setInterval(() => {
+                if (currentStage >= 2) {
+                    const petal = document.createElement('div');
+                    petal.className = 'rose-petal';
+                    petal.innerHTML = '🌹';
+                    petal.style.left = Math.random() * 100 + 'vw';
+                    petal.style.animationDuration = (Math.random() * 4 + 8) + 's';
+                    container.appendChild(petal);
+                    
+                    setTimeout(() => {
+                        if (petal.parentNode) {
+                            petal.parentNode.removeChild(petal);
+                        }
+                    }, 12000);
+                }
+            }, 1200);
+        }
+
+        function createStageSpecificAnimations(stage) {
+            const container = document.getElementById('animationContainer');
+            
+            if (stage >= 3) {
+                // Add floating rings
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const ring = document.createElement('div');
+                        ring.className = 'floating-rings';
+                        ring.innerHTML = '💍';
+                        ring.style.left = Math.random() * 80 + 10 + 'vw';
+                        ring.style.top = Math.random() * 80 + 10 + 'vh';
+                        ring.style.animationDelay = i * 2 + 's';
+                        container.appendChild(ring);
+                        
+                        setTimeout(() => {
+                            if (ring.parentNode) {
+                                ring.parentNode.removeChild(ring);
+                            }
+                        }, 20000);
+                    }, i * 1000);
+                }
+            }
+
+            if (stage >= 4) {
+                // Add dancing cupids
+                for (let i = 0; i < 2; i++) {
+                    setTimeout(() => {
+                        const cupid = document.createElement('div');
+                        cupid.className = 'dancing-cupid';
+                        cupid.innerHTML = '💘';
+                        cupid.style.left = Math.random() * 70 + 15 + 'vw';
+                        cupid.style.top = Math.random() * 70 + 15 + 'vh';
+                        cupid.style.animationDelay = i * 1.5 + 's';
+                        container.appendChild(cupid);
+                        
+                        setTimeout(() => {
+                            if (cupid.parentNode) {
+                                cupid.parentNode.removeChild(cupid);
+                            }
+                        }, 25000);
+                    }, i * 1500);
+                }
+            }
+        }
+
+        function sayYes() {
+            // Hide everything
+            document.getElementById('mainQuestion').style.display = 'none';
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.querySelectorAll('.question-image').forEach(img => img.style.display = 'none');
+            document.getElementById('buttons').style.display = 'none';
+            document.getElementById('stageIndicator').style.display = 'none';
+            document.getElementById('finalMessage').style.display = 'none';
+            
+            // Show celebration
+            document.getElementById('celebration').classList.add('show');
+            
+            // Show celebration GIF after a short delay
+            setTimeout(() => {
+                document.getElementById('celebrationGif').classList.add('show');
+            }, 1000);
+            
+            // Create hearts explosion
+            createHeartsExplosion();
+            
+            // Change background to celebration
+            document.body.style.backgroundImage = 'url("https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop")';
+            document.getElementById('overlay').style.background = 'rgba(255, 182, 193, 0.3)';
+        }
+
+        function sayNo() {
+            if (currentStage < 5) {
+                currentStage++;
+                
+                // Hide main question after first no
+                if (currentStage === 1) {
+                    document.getElementById('mainQuestion').style.display = 'none';
+                }
+                
+                // Hide all questions and images first
+                document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+                document.querySelectorAll('.question-image').forEach(img => img.classList.remove('active'));
+                
+                // Show current question and image
+                document.getElementById(`question${currentStage}`).classList.add('active');
+                document.getElementById(`questionImage${currentStage}`).classList.add('active');
+                
+                // Update stage indicator
+                document.getElementById('stageIndicator').textContent = `Этап ${currentStage + 1}/5`;
+                
+                // Change background
+                document.body.className = `stage-${currentStage + 1}`;
+                
+                // Make yes button bigger
+                const yesBtn = document.getElementById('yesBtn');
+                const currentScale = 1 + (currentStage * 0.15);
+                yesBtn.style.transform = `scale(${currentScale})`;
+                
+                // Create stage-specific animations
+                createStageSpecificAnimations(currentStage);
+                
+                // Intensify overlay based on stage
+                const overlay = document.getElementById('overlay');
+                const opacity = 0.4 + (currentStage * 0.1);
+                overlay.style.background = `rgba(0, 0, 0, ${opacity})`;
+                
+                // Make no button start running on final stage
+                if (currentStage === 5) {
+                    makeButtonRun();
+                }
+            }
+        }
+
+        function makeButtonRun() {
+            const noBtn = document.getElementById('noBtn');
+            const content = document.querySelector('.content');
+            
+            if (!isRunning) {
+                isRunning = true;
+                noBtn.classList.add('running');
+                
+                // Make content container relative for absolute positioning
+                content.style.position = 'relative';
+                
+                // Remove hover events and use click for mobile
+                noBtn.onclick = (e) => {
+                    e.preventDefault();
+                    runAway();
+                };
+            }
+        }
+
+        function runAway() {
+            const noBtn = document.getElementById('noBtn');
+            const content = document.querySelector('.content');
+            const contentRect = content.getBoundingClientRect();
+            
+            if (runCount < maxRuns) {
+                runCount++;
+                
+                // Calculate boundaries within the content area
+                const maxX = contentRect.width - noBtn.offsetWidth - 20;
+                const maxY = contentRect.height - noBtn.offsetHeight - 20;
+                
+                // Ensure minimum distances from edges
+                const minX = 20;
+                const minY = 20;
+                
+                const newX = Math.max(minX, Math.min(maxX, Math.random() * maxX));
+                const newY = Math.max(minY, Math.min(maxY, Math.random() * maxY));
+                
+                // Position relative to content container
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = newX + 'px';
+                noBtn.style.top = newY + 'px';
+                
+                // Add some fun text changes
+                const funTexts = ['Неа!', 'Беги!', 'Не поймаешь!', 'Попробуй еще!', 'Нет!!!', 'Никогда!'];
+                noBtn.textContent = funTexts[Math.floor(Math.random() * funTexts.length)];
+                
+                // Add a little shake animation
+                noBtn.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    noBtn.style.animation = '';
+                }, 500);
+            } else {
+                // After 2 runs, show final message and hide the button
+                noBtn.style.display = 'none';
+                
+                // Hide the current stage image before showing final message
+                document.querySelectorAll('.question-image').forEach(img => img.classList.remove('active'));
+                
+                // Show final message and its image
+                document.getElementById('finalMessage').classList.add('show');
+                document.getElementById('finalMessageImage').classList.add('active');
+            }
+        }
+
+        function createHeartsExplosion() {
+            const explosion = document.getElementById('heartsExplosion');
+            const hearts = ['💕', '💖', '💗', '💝', '❤️', '💘', '💞', '💓'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-particle';
+                    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = Math.random() * 100 + 'vh';
+                    heart.style.animationDelay = Math.random() * 1 + 's';
+                    explosion.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        if (heart.parentNode) {
+                            heart.parentNode.removeChild(heart);
+                        }
+                    }, 3000);
+                }, i * 80);
+            }
+        }
+
+        // Initialize
+        createBackgroundAnimations();
+    </script>
+</body>
+</html>
